@@ -16,11 +16,10 @@ export default async function signin_post(req, res){
         const token = jwt.sign({ email: user_email }, JWT_SECRET);
         console.log("token = ", token);
         await client.query("UPDATE users SET token = $1 WHERE email = $2", [token, email]);
-        res.json({ token: `${token}` });
+        // res.setHeader("token",token);
+        res.json({ token: token });
     }
     else {
         console.log("user not found");
     }
-
-    res.redirect("/");
 }
