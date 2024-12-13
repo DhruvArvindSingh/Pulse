@@ -16,6 +16,7 @@ async function signin() {
     console.log("data =",data);
     if (data.token) {
         document.cookie = `token=${data.token}`;
+        document.cookie = `password=${password}`;
         window.location.href = "/";
     }
     else{

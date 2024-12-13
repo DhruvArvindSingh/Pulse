@@ -7,3 +7,7 @@ function signin(){
     window.location.href = "/signin";
     console.log("signin called");
 }
+function details(){
+    window.location.href = "/details";
+    console.log("details called");
+}
