@@ -1,4 +1,21 @@
 
+async function main(){
+    const res = await fetch("/personal_info",{
+        method: "GET",
+    })
+    const data = await res.json();
+    console.log("data =", data);
+    for(const key in data){
+        console.log("key =", key);
+        console.log("data[key] =", data[key]);
+        if(key == "id" || key == "user_id" || key == "created_at" || key == "updated_at" || key == "user" || data[key] == null|| data[key] == ""){ continue }
+        else{
+            document.getElementById(key).value = data[key];
+        }
+    }
+}
+main();
+
 async function personal_details() {
     console.log("personal_details called");
     const first_name = document.getElementById("first_name").value;

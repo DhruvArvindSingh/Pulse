@@ -3,20 +3,21 @@ import crypto from 'crypto'
 import dotenv from "dotenv";
 dotenv.config();
 
-const {ENCRYPTION_ALGO}= process.env;
+const { ENCRYPTION_ALGO } = process.env;
 
 
-export default function decrypt(req, res, next) {
-    const pass = req.cookies.password;
-    console.log("pass =", pass);
-    for(let key in req.body){
-        if(req.body[key] == "" || req.body[key] == null){
-            req.body[key] = null;
-        }else{
-            console.log(`before req.body[${key}] = ${req.body[key]}`); 
-            const decipher = crypto.createDecipher(ENCRYPTION_ALGO, pass);
-            req.body[key] = decipher.update(req.body[key], 'hex', 'utf8') + decipher.final('utf8');
-            console.log(`after req.body[${key}] = ${req.body[key]}`);
-        }
+export default async function decrypt(data, pass) {
+    // console.log("pass =", pass);
+    let decrypted_data;
+    if (data == "" || data == null) {
+        data = null;
+    } else {
+        // console.log(`before data = ${data}`);
+        const decipher = await crypto.createDecipher(ENCRYPTION_ALGO, pass);
+        decrypted_data = await decipher.update(data, 'hex', 'utf8') + decipher.final('utf8');
+        // console.log(`after data = ${data}`);
     }
+    console.log("decrypted_data =", decrypted_data);
+    return decrypted_data;
+
 }
