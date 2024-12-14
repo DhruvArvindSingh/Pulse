@@ -1,0 +1,22 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background:#ffffff;
+    font-family: 'Arial', sans-serif;
+}
+.header-bg {
+    background:   rgb(30, 27, 7);
+}
+.header-title {
+    font-family: 'Georgia', serif;
+    color: #f8f9fa;
+}
+.btn-primary {
+    border-radius: 30px;
+}
+form{
+    box-shadow: 2px 6px 100px #ffffff;
+}
