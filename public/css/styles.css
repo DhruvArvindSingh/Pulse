@@ -1,0 +1,62 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f0f4f8; /* Light background for better contrast */
+    color: #333; /* Dark text for readability */
+}
+
+/* Header Styles */
+.header-bg {
+    background: rgb(30, 27, 7);
+    padding: 20px;
+    text-align: center;
+}
+
+.header-title {
+    font-family: 'Georgia', serif;
+    color: #f8f9fa;
+    font-size: 2.5em;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Form Styles */
+form {
+    box-shadow: 2px 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    background: white;
+}
+
+/* Responsive Styles */
+@media only screen and (max-width: 768px) {
+    .box-area {
+        margin: 0 10px;
+        width: auto; /* Full width on small screens */
+    }
+    .left-box, .right-box {
+        padding: 20px;
+    }
+}

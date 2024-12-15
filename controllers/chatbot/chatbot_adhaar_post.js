@@ -26,8 +26,8 @@ export default async function chatbot_adhaar_post(req, res) {
                 address,
                 mobile_number,
                 email,
-                biometric_data) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
-        [req.user_id, first_name, middle_name, last_name, gender, dob, address, mobile_number, biometric_data]);
+                biometric_data) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+        [req.user_id, first_name, middle_name, last_name, gender, dob, address, mobile_number, email, biometric_data]);
 
 
 

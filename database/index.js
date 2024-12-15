@@ -34,5 +34,89 @@ await client.query(`CREATE TABLE IF NOT EXISTS personal_details(
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     )`);
+await client.query(`CREATE TABLE IF NOT EXISTS adhaar_details(
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        first_name VARCHAR(200),
+        middle_name VARCHAR(200),
+        last_name VARCHAR(200),
+        gender VARCHAR(200),
+        date_of_birth VARCHAR(200),
+        address VARCHAR(200),
+        mobile_number VARCHAR(200),
+        email VARCHAR(200),
+        biometric_data VARCHAR(200),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)`);
+await client.query(`CREATE TABLE IF NOT EXISTS voter_id_details(
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        first_name VARCHAR(200),
+        middle_name VARCHAR(200),
+        last_name VARCHAR(200),
+        date_of_birth VARCHAR(200),
+        home_address VARCHAR(200),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)`);
+await client.query(`CREATE TABLE IF NOT EXISTS pan_card_details(
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        first_name VARCHAR(200),
+        middle_name VARCHAR(200),
+        last_name VARCHAR(200),
+        date_of_birth VARCHAR(200),
+        home_address VARCHAR(200),
+        email VARCHAR(200),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)`);
+await client.query(`CREATE TABLE IF NOT EXISTS driving_license_details(
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        first_name VARCHAR(200),
+        middle_name VARCHAR(200),
+        last_name VARCHAR(200),
+        date_of_birth VARCHAR(200),
+        address VARCHAR(200),
+        medicalCertificate VARCHAR(200),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)`);
+await client.query(`CREATE TABLE IF NOT EXISTS passport_details(
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        first_name VARCHAR(200),
+        middle_name VARCHAR(200),
+        last_name VARCHAR(200),
+        date_of_birth VARCHAR(200),
+        home_address VARCHAR(200),
+        birthCertificate VARCHAR(200),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)`);
+
+await client.query(`CREATE TABLE IF NOT EXISTS marksheet_details(
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        first_name VARCHAR(200),
+        middle_name VARCHAR(200),
+        last_name VARCHAR(200),
+        date_of_birth VARCHAR(200),
+        schoolName VARCHAR(200),
+        currentClass VARCHAR(200),
+        rollNumber VARCHAR(200),
+        marks VARCHAR(200),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)`);
+
 
 export default client;

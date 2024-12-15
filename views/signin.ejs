@@ -1,75 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/signin.css">
     <title>SignIn</title>
 </head>
+
 <body>
 
-    <!----------------------- Main Container -------------------------->
-
-     <div class="container d-flex justify-content-center align-items-center min-vh-100">
-
-    <!----------------------- Login Container -------------------------->
-
-       <div class="row border rounded-5 p-3 bg-white shadow box-area">
-
-    <!--------------------------- Left Box ----------------------------->
-
-       <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #E5E1DA;">
-           <div class="featured-image mb-3">
-            <img src="https://dl-cdn.dl6.in/nsso/images/mp_logo_ori.png" class="img-fluid" style="width: 250px;">
-           </div>
-           <p class="text-white fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;"> Verified</p>
-           <small class="text-white text-wrap text-center" style="width: 17rem;font-family: 'Courier New', Courier, monospace;">Simple and Direct:
-
-            Enter the Instructions
-            Instructions: Enter Here
-            Go to Instructions.</small>
-       </div> 
-
-    <!-------------------- ------ Right Box ---------------------------->
-        
-       <div class="col-md-6 right-box">
-          <div class="row align-items-center">
-                <div class="header-text mb-4">
-                     <h2>Hello,Again</h2>
-                     <p>Sign In to your account via DigiLocker</p>
+    <div class="container">
+        <div class="form-container">
+            <div class="left-side">
+                <div class="animated-bg">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
                 </div>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control form-control-lg bg-light fs-6" id="email" name="email" placeholder="Email address">
-                </div>
-                <div class="input-group mb-1">
-                    <input type="password" class="form-control form-control-lg bg-light fs-6" id="password" name="password" placeholder="Password">
-                </div>
-                <div class="input-group mb-5 d-flex justify-content-between">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="formCheck">
-                        <label for="formCheck" class="form-check-label text-secondary"><small>Remember Me</small></label>
+                <div class="content">
+                    <img src="https://dl-cdn.dl6.in/nsso/images/mp_logo_ori.png" alt="Logo" class="logo">
+                    <div class="badge">
+                        <span class="badge-icon">✓</span>
+                        Verified
                     </div>
-                    <div class="forgot">
-                        <small><a href="#">Forgot Password?</a></small>
+                    <div class="instructions">
+                        <h3>Simple and Direct</h3>
+                        <ul>
+                            <li>Enter the Instructions</li>
+                            <li>Instructions: Enter Here</li>
+                            <li>Go to Instructions</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="input-group mb-3">
-                    <button class="btn btn-lg btn-primary w-100 fs-6"style="background: #E5E1DA" onclick="signin()">Login</button>
+            </div>
+            <div class="right-side">
+                <div class="form-content">
+                    <h1>Hello, Again</h1>
+                    <p class="subtitle">Sign in to your account via DigiLocker</p>
+                    <form>
+                        <div class="input-group">
+                            <input type="email" id="email" required>
+                            <label for="email">Email address</label>
+                            <span class="highlight"></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="password" required>
+                            <label for="password">Password</label>
+                            <span class="highlight"></span>
+                        </div>
+                        <div class="form-options">
+                            <div class="remember-me">
+                                <input type="checkbox" id="remember" class="custom-checkbox">
+                                <label for="remember">Remember Me</label>
+                            </div>
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn primary">
+                            <span>Login</span>
+                            <div class="btn-bg"></div>
+                        </button>
+                        <div class="divider">
+                            <span>or</span>
+                        </div>
+                        <button type="button" class="btn google">
+                            <img src="https://pngimg.com/d/google_PNG19635.png" alt="Google" class="google-icon">
+                            <span>Sign In with Google</span>
+                        </button>
+                    </form>
+                    <p class="signup-link">
+                        Don't have an account?
+                        <a href="/signup" class="animated-link">Sign Up</a>
+                    </p>
                 </div>
-                <div class="input-group mb-3">
-                    <button class="btn btn-lg btn-light w-100 fs-6"><img src="https://pngimg.com/d/google_PNG19635.png" style="width:20px" class="me-2"><small>Sign In with Google</small></button>
-                </div>
-                <div class="row">
-                    <small>Don't have account? <a href="#">Sign Up</a></small>
-                </div>
-          </div>
-       </div> 
-       <script src="/js/signin.js"></script>
-
-      </div>
+            </div>
+        </div>
     </div>
+    <script src="/js/signin.js"></script>
 
 </body>
+
 </html>

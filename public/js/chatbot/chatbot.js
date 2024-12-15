@@ -386,7 +386,7 @@ function displayMarksCardForm(name, dob, schoolName, currentClass, rollNumber, m
             <label for="marks">Marks:</label>
             <input type="text" id="marks" value="${marks}" />
         </div>
-        <button id="submit-btn">Submit</button>
+        <button id="submit-btn" onclick="submitMarksCardForm()">Submit</button>
     `;
     const contentDiv = document.createElement("div");
     contentDiv.appendChild(formDiv);
@@ -395,6 +395,30 @@ function displayMarksCardForm(name, dob, schoolName, currentClass, rollNumber, m
     messageDiv.appendChild(contentDiv);
     const chatContainer = document.getElementById('chat-box');
     chatContainer.appendChild(messageDiv);
+}
+async function submitMarksCardForm() {
+    console.log("submitMarksCardForm called");
+    console.log("name:", name);
+    console.log("dob:", dob);
+    console.log("schoolName:", schoolName);
+    console.log("currentClass:", currentClass);
+    console.log("rollNumber:", rollNumber);
+    console.log("marks:", marks);
+    // await fetch('/submit-marks-card-form', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({ 
+    //         "name":name,
+    //         "dob":dob,
+    //         "schoolName":schoolName,
+    //         "currentClass":currentClass,
+    //         "rollNumber":rollNumber,
+    //         "marks":marks })
+        
+    // })
+    
 }
 function displayBankPassbookForm(accountNumber, address) {
     const formDiv = document.createElement('div');

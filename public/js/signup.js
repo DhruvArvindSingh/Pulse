@@ -1,10 +1,11 @@
 
 async function submit() {
+    console.log("submit called");
     const f_name = document.getElementById("first_name").value;
     const l_name = document.getElementById("last_name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const re_password = document.getElementById("re-password").value;
+    const re_password = document.getElementById("confirm-password").value;
     if (password != re_password) {
         alert("Password and Re-Password do not match");
         return;
