@@ -80,8 +80,9 @@ async function displayAadhaarForm(name, dob, gender, address, mobileNumber, emai
     let f_name, m_name, l_name;
     let names = name.split(' ');
     if(names.length == 1) {
-        alert("Please enter a valid name");
-        return;
+        f_name = names[0];
+        l_name = null;
+        m_name = null;
     }
     else if(names.length == 2) {
         f_name = names[0];
@@ -97,7 +98,7 @@ async function displayAadhaarForm(name, dob, gender, address, mobileNumber, emai
         alert("Please enter a valid name");
         return;
     }
-    await fetch("/chatbot/adhaar_details",{
+    const response = await fetch("/chatbot/adhaar_details",{
         method: "POST",
         body: JSON.stringify({
             first_name: f_name,
@@ -114,6 +115,8 @@ async function displayAadhaarForm(name, dob, gender, address, mobileNumber, emai
             "Content-type": "application/json; charset=UTF-8"
         }
     })
+    console.log("Response: ", response);
+    console.log("Success");
 
     const formDiv = document.createElement('div');
     const messageDiv = document.createElement("div");
@@ -163,7 +166,44 @@ async function displayAadhaarForm(name, dob, gender, address, mobileNumber, emai
     chatContainer.appendChild(messageDiv);
 }
 
-function displayVoterForm(name, dob, address) {
+async function displayVoterForm(name, dob, address) {
+    let f_name, m_name, l_name;
+    let names = name.split(' ');
+    if(names.length == 1) {
+        f_name = names[0];
+        l_name = null;
+        m_name = null;
+    }
+    else if(names.length == 2) {
+        f_name = names[0];
+        l_name = names[1];
+        m_name = null;
+    }
+    else if(names.length == 3) {
+        f_name = names[0];
+        m_name = names[1];
+        l_name = names[2];
+    }
+    else{
+        alert("Please enter a valid name");
+        return;
+    }
+    const response = await fetch("/chatbot/voter_details",{
+        method: "POST",
+        body: JSON.stringify({
+            first_name: f_name,
+            middle_name: m_name,
+            last_name: l_name,
+            dob: dob,
+            address: address,
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+    console.log("Response: ", response);
+    console.log("Success");
+
     const formDiv = document.createElement('div');
     const messageDiv = document.createElement("div");
     messageDiv.className = "message-container";

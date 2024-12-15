@@ -1,4 +1,4 @@
-import client from "../database/index.js";
+import client from "../../database/index.js";
 export default async function chatbot_adhaar_post(req, res) {
     console.log("chatbot_adhaar_post called");
     console.log("decoded email = ", req.email);
@@ -25,8 +25,9 @@ export default async function chatbot_adhaar_post(req, res) {
                 gender,        
                 date_of_birth,
                 home_address_1,
-                phone_no_1) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-            [req.user_id, first_name, middle_name, last_name, gender, dob, address, mobile_number]);
+                phone_no_1,
+                biometric_details) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+            [req.user_id, first_name, middle_name, last_name, gender, dob, address, mobile_number, biometric_data]);
     }
     else {
         const query = `
@@ -37,10 +38,11 @@ export default async function chatbot_adhaar_post(req, res) {
       gender = $4,
       date_of_birth = $5,
       home_address_1 = $6,
-      phone_no_1 = $7
-  WHERE id = $8
+      phone_no_1 = $7,
+      biometric_details = $8
+  WHERE id = $9
 `;
-        const values = [first_name, middle_name, last_name, gender, dob, address, mobile_number, req.p_user_id];
+        const values = [first_name, middle_name, last_name, gender, dob, address, mobile_number, biometric_data, req.p_user_id];
 
         await client.query(query, values, (err, res) => {
             if (err) {
@@ -51,6 +53,8 @@ export default async function chatbot_adhaar_post(req, res) {
         });
 
     }
+
+    res.status(200).json({ message: "success" });
 
 
 
