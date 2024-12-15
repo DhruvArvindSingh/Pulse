@@ -15,44 +15,21 @@ export default async function chatbot_adhaar_post(req, res) {
         email,
         biometric_data
     } = req.body;
-    if (req.p_user_id == -1) {
-        await client.query(`
-            INSERT INTO personal_details(
+    await client.query(`
+            INSERT INTO adhaar_details(
                 user_id,
                 first_name,
                 middle_name,
                 last_name,
-                gender,        
-                date_of_birth,
-                home_address_1,
-                phone_no_1,
-                biometric_details) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
-            [req.user_id, first_name, middle_name, last_name, gender, dob, address, mobile_number, biometric_data]);
-    }
-    else {
-        const query = `
-  UPDATE personal_details
-  SET first_name = $1,
-      middle_name = $2,
-      last_name = $3,
-      gender = $4,
-      date_of_birth = $5,
-      home_address_1 = $6,
-      phone_no_1 = $7,
-      biometric_details = $8
-  WHERE id = $9
-`;
-        const values = [first_name, middle_name, last_name, gender, dob, address, mobile_number, biometric_data, req.p_user_id];
+                gender,
+                date_of_birth,        
+                address,
+                mobile_number,
+                email,
+                biometric_data) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+        [req.user_id, first_name, middle_name, last_name, gender, dob, address, mobile_number, biometric_data]);
 
-        await client.query(query, values, (err, res) => {
-            if (err) {
-                console.error('Error executing query', err.stack);
-            } else {
-                console.log('Update successful');
-            }
-        });
 
-    }
 
     res.status(200).json({ message: "success" });
 

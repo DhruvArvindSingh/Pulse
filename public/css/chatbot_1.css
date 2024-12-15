@@ -884,3 +884,10 @@ label[for^="param-required-"] {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+.suggestion{
+    display: inline-flex;
+    overflow-y: scroll;
+    max-height: 125px;
+    background: var(--theme-bg-color);
+    flex-wrap: wrap;
+}

@@ -75,49 +75,7 @@ createOpenChatDiv();
 //     }
 // ];
 
-async function displayAadhaarForm(name, dob, gender, address, mobileNumber, email, biometricData) {
-
-    let f_name, m_name, l_name;
-    let names = name.split(' ');
-    if(names.length == 1) {
-        f_name = names[0];
-        l_name = null;
-        m_name = null;
-    }
-    else if(names.length == 2) {
-        f_name = names[0];
-        l_name = names[1];
-        m_name = null;
-    }
-    else if(names.length == 3) {
-        f_name = names[0];
-        m_name = names[1];
-        l_name = names[2];
-    }
-    else{
-        alert("Please enter a valid name");
-        return;
-    }
-    const response = await fetch("/chatbot/adhaar_details",{
-        method: "POST",
-        body: JSON.stringify({
-            first_name: f_name,
-            middle_name: m_name,
-            last_name: l_name,
-            dob: dob,
-            gender: gender,
-            address: address,
-            mobile_number: mobileNumber,
-            email: email,
-            biometric_data: biometricData
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    })
-    console.log("Response: ", response);
-    console.log("Success");
-
+function displayAadhaarForm(name, dob, gender, address, mobileNumber, email, biometricData) {
     const formDiv = document.createElement('div');
     const messageDiv = document.createElement("div");
     messageDiv.className = "message-container";
@@ -166,44 +124,7 @@ async function displayAadhaarForm(name, dob, gender, address, mobileNumber, emai
     chatContainer.appendChild(messageDiv);
 }
 
-async function displayVoterForm(name, dob, address) {
-    let f_name, m_name, l_name;
-    let names = name.split(' ');
-    if(names.length == 1) {
-        f_name = names[0];
-        l_name = null;
-        m_name = null;
-    }
-    else if(names.length == 2) {
-        f_name = names[0];
-        l_name = names[1];
-        m_name = null;
-    }
-    else if(names.length == 3) {
-        f_name = names[0];
-        m_name = names[1];
-        l_name = names[2];
-    }
-    else{
-        alert("Please enter a valid name");
-        return;
-    }
-    const response = await fetch("/chatbot/voter_details",{
-        method: "POST",
-        body: JSON.stringify({
-            first_name: f_name,
-            middle_name: m_name,
-            last_name: l_name,
-            dob: dob,
-            address: address,
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    })
-    console.log("Response: ", response);
-    console.log("Success");
-
+function displayVoterForm(name, dob, address) {
     const formDiv = document.createElement('div');
     const messageDiv = document.createElement("div");
     messageDiv.className = "message-container";
@@ -776,7 +697,7 @@ clearBtn.addEventListener("click", () => {
 });
 
 function addCopyButtons() {
-    try{
+    try {
         let codeBlocks = document.querySelectorAll("pre");
         codeBlocks.forEach((block) => {
             let code = block.lastChild;
@@ -803,10 +724,10 @@ function addCopyButtons() {
             block.parentNode.insertBefore(topBar, block);
         });
     }
-    catch(e){
+    catch (e) {
         console.log("No code blocks found");
     }
-   
+
 }
 function toBase64(file) {
     return new Promise((resolve, reject) => {
@@ -823,7 +744,7 @@ function appendMessage(role, text) {
     const image = document.createElement("img");
     if (role === "user") {
         image.className = "user-image";
-        image.setAttribute("src", "/images/user.png");
+        image.setAttribute("src", "user.png");
         messageDiv.appendChild(image);
     } else {
         image.className = "assistant-image";
@@ -918,7 +839,7 @@ async function sendMessage() {
         stream: true,
         ...(Array.isArray(window.tools) && window.tools.length > 0 && { tools: window.tools })
     };
-    
+
     if (window.chatbotSystemPrompt) {
         setCommand("system", window.chatbotSystemPrompt);
     }
@@ -1054,26 +975,183 @@ async function sendMessage() {
 
             if (responsetext) {
                 OpenAIHistory.push({ role: "assistant", content: responsetext });
-            }
 
+            }
             if (containsFormattedText(responsetext)) {
                 generateAndDisplayImages(responsetext, currentStyle);
             }
-
+            
             console.log(OpenAIHistory);
-
+            
         } catch (error) {
             console.error("Fetch failed:", error);
         }
-
-
+        
+        
         sendBtn.disabled = false;
         userInput.value = "";
         imageInput.value = "";
+        await buildSuggestions();
     }
     catch {
         //pass
     }
+}
+async function buildSuggestions() {
+    let url = "https://std-openaiproxy.web.val.run/v1/chat/completions";
+    let payload = {
+        model: "gpt-4o",
+        messages: OpenAIHistory.concat({role:"user", content:"You are an advanced assistant designed to anticipate the most probable user responses and provide suggestions based on the ongoing conversation. Your task is to generate one to three highly relevant and contextually appropriate suggestions for the user to select from. The suggestions should aim to guide the user in a seamless and intuitive interaction.The remember should be short and concise not exceeding 50 characters(4-5 words only). You are provided with a existing chat between user and an AI assistant, you are not that assistant you to behave like a user. how user would response of the AI. Act like the you have to answer the message present to you."}),
+        stream: true,
+        tools: [
+            {
+                "type": "function",
+                "function": {
+                    "name": "createSuggestions",
+                    "description": "Generate suggestions for the user that represent the most likely responses for their next message.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "first": {
+                                "type": "string",
+                                "description": "The First or most probable Suggestion."
+                            },
+                            "second": {
+                                "type": "string",
+                                "description": "The Second Suggestion."
+                            },
+                            "third": {
+                                "type": "string",
+                                "description": "The third suggestion."
+                            }
+                        },
+                        "required": [
+                            "first"
+                        ]
+                    }
+                }
+            }
+        ]
+    };
+    let currentIndex = 0; // Index for tracking function calls
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer vtwn_2Ca97BQraumTC37dTGXUhJLL8vmY`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let responsetext = '';
+        let functionName = '';
+        let tool_id = '';
+        let functionArguments = "";
+        let isCollectingFunctionArgs = true;
+        let areToolsCalled = false;
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+                isCollectingFunctionArgs = false;
+                break;
+            }
+
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split("\n");
+
+            for (let line of lines) {
+                if (line.trim().startsWith("data: ")) {
+                    const jsonData = line.replace("data: ", "").trim();
+
+                    if (jsonData === "[DONE]") {
+                        continue;
+                    }
+
+                    try {
+                        const data = JSON.parse(jsonData);
+
+                        if (data.choices && data.choices[0] && data.choices[0].delta && data.choices[0].delta.content) {
+                            responsetext += data.choices[0].delta.content;
+
+                        }
+
+                        const delta = data.choices[0].delta;
+
+                        const toolCall = delta.tool_calls ? delta.tool_calls[0] : null;
+                        if (toolCall) {
+                            areToolsCalled = true;
+                            isCollectingFunctionArgs = true;
+                            if (toolCall.id) {
+                                tool_id = toolCall.id;
+                                functionArguments = '';
+                                accumulatedCalls.push({
+                                    function_id: tool_id,
+                                    function_name: functionName,
+                                    function_args: functionArguments
+                                });
+                            }
+
+
+                            if (toolCall.function.name) {
+                                functionName = toolCall.function.name;
+                                console.log("Function name:", functionName);
+                                const existingCallIndex = accumulatedCalls.findIndex(call => call.function_id === tool_id);
+                                if (existingCallIndex !== -1) {
+                                    accumulatedCalls[existingCallIndex] = {
+                                        function_id: tool_id,
+                                        function_name: functionName,
+                                        function_args: functionArguments,
+                                    };
+                                }
+
+                            }
+                            if (toolCall.function.arguments) {
+                                functionArguments += toolCall.function.arguments;
+                                const existingCallIndex = accumulatedCalls.findIndex(call => call.function_id === tool_id);
+                                if (existingCallIndex !== -1) {
+                                    accumulatedCalls[existingCallIndex] = {
+                                        function_id: tool_id,
+                                        function_name: functionName,
+                                        function_args: functionArguments,
+                                    };
+                                }
+
+                            }
+                        }
+                    } catch (e) {
+
+                        // console.error("Error parsing JSON:", e);
+                    }
+                }
+            }
+        }
+
+        if (!isCollectingFunctionArgs && areToolsCalled) {
+            console.log(accumulatedCalls);
+
+            await processAccumulatedCalls(accumulatedCalls);
+
+
+            functionArguments = "";
+            functionName = "";
+            isCollectingFunctionArgs = false;
+        }
+
+
+
+
+    } catch (error) {
+        console.error("Fetch failed:", error);
+    }
+
 }
 async function processAccumulatedCalls(Calls) {
     try {
@@ -1104,6 +1182,21 @@ async function processAccumulatedCalls(Calls) {
                         const prompt = args.prompt;
                         const imageUrl = await GenerateImage(prompt, currentStyle);
                         createAssistantImageDiv(imageUrl, "Here is your Image");
+                        break;
+                    }
+                    case 'createSuggestions': {
+                        const { first, second, third } = args;
+
+                        // Check if suggestions are provided
+                        if (first || second || third) {
+                            createSuggestions(
+                                first || "",
+                                second || "",
+                                third || ""
+                            );
+                        } else {
+                            console.log("No suggestions provided.");
+                        }
                         break;
                     }
                     case 'displayAadhaarForm': {
@@ -1151,7 +1244,7 @@ async function processAccumulatedCalls(Calls) {
                     case 'displayMarksCardForm': {
                         const { name, dob, schoolName, currentClass, rollNumber, marks } = args;
                         console.log("Handled 10th Standard Marks Card Data");
-                        displayMarksCardForm(name, dob, schoolName,currentClass, rollNumber, marks);
+                        displayMarksCardForm(name, dob, schoolName, currentClass, rollNumber, marks);
                         break;
                     }
                     case 'displayBankPassbookForm': {
@@ -1261,7 +1354,7 @@ function removeLoadAnimation() {
     try {
         // Find all elements with the class 'typewriter'
         const typewriterElements = document.querySelectorAll('.typewriter');
-        
+
         // Check if any such elements exist and remove them
         if (typewriterElements.length > 0) {
             typewriterElements.forEach(element => {
@@ -1351,7 +1444,7 @@ function createImageChatDiv(source, userMessage) {
     const contentDiv = document.createElement("div");
     const image = document.createElement("img");
     image.className = "user-image";
-    image.setAttribute("src", "/images/user.png");
+    image.setAttribute("src", "user.png");
     messageDiv.appendChild(image);
     contentDiv.className = "user-content";
     const sentImage = document.createElement("img");
@@ -1492,7 +1585,7 @@ function createFailedImagePlaceholder(prompt, style) {
     const image = document.createElement("img");
 
     image.className = "user-image";
-    image.setAttribute("src", "/images/bot.png");
+    image.setAttribute("src", "bot.png");
     messageDiv.appendChild(image);
 
     contentDiv.className = "user-content";
@@ -1567,6 +1660,19 @@ function SetCredentials() {
         apiModel = "gpt-4o";
         supportImages = true;
         supportFunctions = true
+    }
+    else if (chatModel == "grok") {
+        apiBase = "https://api.x.ai/v1/chat/completions"
+        apiKey = "xai-pQlBc2J8VbLbXlxmwMz0tjDf5GSyFpKPqbwtaUvYjvffrPB4PfPIxRER5O98rs0QO5tDHfazMH94t8ZP"
+        apiModel = "grok-beta";
+        supportImages = false;
+        supportFunctions = false;
+    } else if (chatModel == "shuttle") {
+        apiBase = "https://api.shuttleai.com/v1/chat/completions"
+        apiKey = "shuttle-2fb54eb2e673794889ab"
+        apiModel = "shuttle-3";
+        supportImages = true;
+        supportFunctions = true;
     }
     else if (chatModel == "flash") {
         apiBase = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
@@ -1687,3 +1793,55 @@ document.getElementById("sidebarCollapse").addEventListener("click", function ()
         }
     }
 });
+
+function createSuggestions(suggestion01, suggestion02, suggestion03) {
+    const chatContainer = document.querySelector(".chat-container");
+    const existingSuggestionDiv = document.querySelector(".suggestion");
+
+    // Collect only the valid suggestions
+    const suggestions = [suggestion01, suggestion02, suggestion03].filter(Boolean);
+
+    // Check if there are any suggestions to display
+    if (suggestions.length > 0) {
+        const newSuggestionsHTML = suggestions
+            .map(suggestion => `
+                <button class="suggestion-button generate">
+                    <span>${suggestion}</span>
+                </button>
+            `)
+            .join("");
+
+        if (existingSuggestionDiv) {
+            // If suggestions already exist, update their content
+            existingSuggestionDiv.innerHTML = newSuggestionsHTML;
+        } else {
+            // If suggestions do not exist, create a new suggestion container
+            const suggestionDiv = document.createElement("div");
+            suggestionDiv.className = "suggestion";
+            suggestionDiv.innerHTML = newSuggestionsHTML;
+
+            const userFunction = document.querySelector(".user-input-container");
+            chatContainer.after(suggestionDiv, userFunction);
+
+            
+        }
+
+        // Add click event listeners to suggestion buttons
+        const suggestionButtons = document.querySelectorAll(".suggestion-button");
+        suggestionButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const suggestion = button.textContent.trim();
+                const userInput = document.querySelector(".user-input");
+                const sendBtn = document.querySelector("#send-btn");
+                userInput.value = suggestion;
+                sendBtn.click();
+            });
+        });
+    } else {
+        // If no suggestions, remove existing suggestion container if it exists
+        if (existingSuggestionDiv) {
+            existingSuggestionDiv.remove();
+        }
+        console.log("No suggestions to display.");
+    }
+}
