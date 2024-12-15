@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Advance ChatBot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/chatbot_1.css">
+  <link rel="stylesheet" href="/css/chatbot_2.css">
+  <link rel="stylesheet" href="/css/chatbot_3.css">
+</head>
+
+<body>
+  <div class="toolContainer">
+    <div class="toolDiv">
+      <h1>Tool Calling Visual Editor</h1>
+
+      <div id="tools">
+        <!-- Tools will be dynamically added here -->
+      </div>
+
+      <button onclick="addTool()">Add Tool</button>
+      <button onclick="generateJSON()">Generate JSON</button>
+      <button onclick="closeToolDiv()">Close</button>
+      <pre id="output"></pre>
+    </div>
+  </div>
+  <div id="fullscreenModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn download-btn" id="closeBtn"><i class="fa-solid fa-xmark"></i></button>
+      <img id="fullscreenImage" src="./Images/generated_image_2 (1).png" alt="Fullscreen Image">
+    </div>
+  </div>
+  <!-- partial:index.partial.html -->
+  <div class="video-bg">
+    <video width="320" height="240" autoplay loop muted>
+      <source src="https://assets.codepen.io/3364143/7btrrd.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div class="dark-light">
+    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+    </svg>
+  </div>
+  <div class="app">
+    <div class="header">
+
+      <div class="menu-circle"></div>
+      <div class="header-menu">
+        <button type="button" id="sidebarCollapse">
+          <i class="fas fa-align-left"></i>
+        </button>
+        <a id="textGeneration" class="menu-link is-active" href="#">Chat</a>
+        <a class="menu-link" id="imageGeneration" href="#">Images</a>
+        <a class="menu-link" id="promptGeneration" href="#">Discover</a>
+
+      </div>
+
+    </div>
+    <div class="wrapper">
+      <nav id="sidebar" class="chatSidebar">
+        <div class="sidebar-header">
+          <h4>Chat List</h4>
+        </div>
+        <div class="openContainer side-wrapper">
+          <button class="side-title" id="newBtn" title="Create a new Chat"><i class="fa-regular fa-edit"></i> New
+            Chat</button>
+          <button class="side-title" style="position: absolute; bottom: 110px;" id="import-btn"
+            title="Import all the chats from a file">
+            <label for="fileInput"><i class="fa-solid fa-download"></i> Import the Chats<input style="display: none;"
+                type="file" accept=".json" id="fileInput"></label>
+
+          </button>
+
+          <button style="position: absolute; bottom: 60px;" id="export-btn" class="side-title"
+            title="Export all the chats to a file"><i class="fa-solid fa-upload"></i> Export the Chats</button>
+          <button style="position: absolute; bottom: 10px;" id="refresh-btn" class="side-title"
+            title="Delete all the chats"><i class="fa-solid fa-trash"></i> Delete All Chats</button>
+        </div>
+      </nav>
+      <nav id="sidebar" class="imageSidebar hidden">
+        <div class="sidebar-header">
+          <h4>Options</h4>
+        </div>
+        <div class="settings">
+          <p class="settingsText">Model</p>
+          <select title="api-selector" class="api-selector" id="api-selector">
+            <option value="flux-dev">Flux Dev</option>
+            <option value="flux-schnell">Flux Schnell</option>
+          </select>
+          <br>
+          <p class="settingsText">Choose the Total images</p>
+          <div class="numberContainer">
+            <button class="number active">1</button>
+            <button class="number">2</button>
+            <button class="number">4</button>
+          </div>
+          <br>
+          <p class="settingsText">Choose the resolution</p>
+          <div class="numberContainer">
+            <button value="s" class="resolution active">1:1</button>
+            <button value="p" class="resolution">3:4</button>
+            <button value="l" class="resolution">4:3</button>
+          </div>
+          <br>
+
+        </div>
+
+      </nav>
+      <div class="main-container hidden" id="imageContainer">
+        <div class="content-wrapper">
+          <div class="content-section">
+            <div class="container">
+
+              <div class="input-container">
+                <textarea id="prompt" placeholder="Imagine..." rows="1"></textarea>
+                <button type="button" class="generate" id="optimise"><i id="modify"
+                    class="fa-solid fa-wand-magic-sparkles"></i></button>
+                <button type="button" class="generate" id="generate">Generate</button>
+              </div>
+              <!-- <input type="text" name="prompt" id="prompt" placeholder="Imagine....">
+                <button type="button" class="generate" id="optimise"><i class="fa-solid fa-shuffle"></i></button>
+                <button type="button" class="generate" id="generate">Generate</button> -->
+
+              <div class="stylesContainer">
+                <div class="styles active">
+                  <img src="/images/forbidden.png" alt="Photographic"
+                    style="height: 85px;background-color: rgb(229, 231, 235);padding: 20px;">
+                  <p>None</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/photography.e48bdcc6.png" alt="Photographic">
+                  <p>Photographic</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/anime.5f9d9e65.png" alt="Anime">
+                  <p>Anime</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/fantasy_art.bfeae171.png" alt="Fantasy Art">
+                  <p>Fantasy Art</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/line_art.4b475d14.png" alt="Line Art">
+                  <p>Line Art</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/3D_model.367cf3c5.png" alt="3D Model">
+                  <p>3D Model</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/neonpunk.d5daaeb2.png" alt="Neopunk">
+                  <p>Neopunk</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/comic.e06aaa2a.png" alt="Comic Book">
+                  <p>Comic Book</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/digital_art.59ada2f0.png" alt="Digital Art">
+                  <p>Digital Art</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/cinematic.65fef1f3.png" alt="Cinematic">
+                  <p>Cinematic</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/Low_Poly.d8f23825.png" alt="Low Poly">
+                  <p>Low Poly</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/Isometric.08f35d47.png" alt="Isometric">
+                  <p>Isometric</p>
+                </div>
+                <div class="styles">
+                  <img src="/images/disney_pixar.webp" alt="Isometric">
+                  <p>Disney Pixar</p>
+                </div>
+
+              </div>
+              <div class="output hidden">
+                <!-- Images will be added here dynamically -->
+              </div>
+
+              <button title="Back" class="backBtn hidden">Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main-container" id="textContainer">
+        <div class="chat-container">
+          <div class="chat-header">
+
+
+            <button id="saveButton" title="Save the chat."><i class="fa-solid fa-save"></i></button>
+            <button id="setTitle" title="Set the title."><i class="fa-regular fa-pen-to-square"></i></button>
+            <input type="text" id="chat-name" placeholder="Chat title...">
+            <button id="clear-btn" title="Delete the current chat"><i class="fa-solid fa-broom"></i></button>
+            <button id="settingsButton" title="Change the settings of the chatbot."><i
+                class="fa-solid fa-gear"></i></button>
+          </div>
+          <div id="chat-box" class="chat-box">
+
+          </div>
+          <div class="user-input-container">
+            <div id="image-preview-container" style="display: none;">
+              <div id="image-preview">
+                <img src="" alt="Preview" id="uploaded-image">
+                <button id="remove-image-btn">✕</button>
+              </div>
+            </div>
+            <input id="user-input" class="user-input" placeholder="Type your message...">
+            <label for="image-input" class="image-input-btn">
+              <!-- <i class="fa-solid fa-image"></i> -->
+              <i class="fa-regular fa-image"></i>
+              <input type="file" id="image-input" class="pictureInput" accept="image/*">
+            </label>
+            <button class="speech-btn"><i class="fa-solid fa-microphone"></i></button>
+            <button id="send-btn" class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+          </div>
+        </div>
+        <div class="overlay-app"></div>
+      </div>
+      <div class="modal-overlay" id="settingsOverlay">
+        <div id="settingsModal" class="base">
+
+          <h3>Settings</h3>
+
+          <label for="prompt">
+            <p>Base Url</p>
+            <input type="text" class="apiKey" placeholder="Base URL" name="prompt" id="baseUrl">
+          </label>
+          <label for="prompt">
+            <p>API Key</p>
+            <input type="password" class="apiKey" placeholder="API KEY" name="prompt" id="apiKey">
+          </label>
+          <label for="prompt">
+            <p>System Prompt</p>
+            <input type="text" class="apiKey" placeholder="System prompt" name="prompt" id="systemprompt">
+          </label>
+
+
+          <p class="settingsText">Chat Model</p>
+          <select title="api-selector" class="api-selector" id="apiModelSelector">
+            <option value="flash">Gemini Flash</option>
+            <option value="pro">Gemini Pro</option>
+            <option value="gpt-4o">GPT 4o Mini</option>
+          </select>
+
+          <p class="settingsText">Image Size</p>
+          <select title="size-selector" class="api-selector" id="size-Selector">
+            <option value="1024x768">Landscape</option>
+            <option value="1024x1024">Square</option>
+            <option value="768x1024">Portrait</option>
+          </select>
+          <button class="generate" id="saveSettingsBtn">Save</button>
+        </div>
+      </div>
+      <div class="main-container hidden" id="promptContainer">
+        <div class="content-wrapper">
+          <div class="content-section">
+            <div class="container">
+              <div class="promptPage">
+                <h1>GPTs</h1>
+                <p>Discover and create custom versions of ChatGPT that combine instructions, extra knowledge, and any
+                  combination of skills.</p>
+
+                <!-- Search Bar -->
+                <div class="promptsearch-bar input">
+                  <input type="text" id="promptsearchInput" placeholder="Search by title, description, or author"
+                    onkeyup="searchCards()">
+                </div>
+
+                <!-- Button to Create New Prompt -->
+                <button id="showPromptFormBtn" class="generate">New Prompt</button>
+                <button id="exportPromptsBtn" class="generate">Export Prompts</button>
+                <input type="file" id="importPromptsInput" style="display:none;">
+                <button id="importPromptsBtn" class="generate">Import Prompts</button>
+
+                <!-- New Prompt Form Overlay -->
+                <div class="new-prompt-overlay modal-overlay" id="newPromptOverlay" style="height:auto; display: none;">
+                  <div class="new-prompt-form ">
+                    <label class="promptImage">
+                      <!-- <i class="fa-solid fa-image"></i> -->
+                      <i class="fa-solid fa-pen editIcon"></i>
+                      <input type="file" id="newPromptImage" accept="image/*" onchange="previewImage(event)">
+
+                    </label>
+                    <h2>Create a New Prompt</h2>
+                    <input type="text" class="promptInput" id="newPromptTitle" placeholder="Title" required>
+                    <input type="text" id="newPromptDescription" placeholder="Description" class="promptInput" required>
+                    <input type="text" id="newPromptFullDescription" class="promptInput" placeholder="Full Description"
+                      required></textarea>
+                    <input type="text" class="promptInput" id="newPromptSystemPrompt" placeholder="System Prompt"
+                      required>
+                    <!-- <img id="imagePreview" style="display:none; width: 100px; height: auto;" /> -->
+                    <button class="generate" id="addPromptBtn">Add Prompt</button>
+                    <button class="generate" id="showTools">Edit Function Calling</button>
+                    <textarea placeholder="Custom Training Data..." name="trainingData" id="trainingDataInput"></textarea>
+                    <button id="closePromptFormBtn" class="generate">Close</button>
+                  </div>
+                </div>
+
+                <!-- Featured Section -->
+                <div id="promptContent"></div>
+                
+
+                <!-- Modal for Card Details -->
+                <div class="modal-overlay" id="modalOverlay">
+                  <div class="base">
+                    <h3 id="modalTitle"></h3>
+                    <p id="modalDescription"></p>
+                    <button class="modal-close" id="promptChatBtn">Chat</button>
+                    <button class="modal-close" id="toolsEditBtn">Edit Tools</button>
+                    <button class="modal-close" id="deletePromptBtn">Delete</button>
+                    <button class="modal-close" id="closeModal">Close</button>
+                  </div>
+                </div>
+
+              </div>
+
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.assistantPath = "/images/bot.png";
+      window.chatbotSystemPrompt = "Always respond in proper markdown., Don't use ### in markdown. But use bold, italics, and other markdowns whenever needed.";
+      window.tools = [];
+      window.trainingData = [];
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.2.1/compressor.min.js"
+      integrity="sha512-MgYeYFj8R3S6rvZHiJ1xA9cM/VDGcT4eRRFQwGA7qDP7NHbnWKNmAm28z0LVjOuUqjD0T9JxpDMdVqsZOSHaSA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="/js/chatbot/chatbot.js" type="module"></script>
+    <script src="/js/chatbot/theme.js"></script>
+    <script src="/js/chatbot/script.js"></script>
+    <script src="/js/chatbot/imageGen.js"></script>
+    <script src="/js/chatbot/promptStore.js"></script>
+</body>
+
+</html>

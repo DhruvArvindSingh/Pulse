@@ -11,3 +11,7 @@ function details(){
     window.location.href = "/details";
     console.log("details called");
 }
+function chatbot(){
+    window.location.href = "/chatbot";
+    console.log("chatbot called");
+}
