@@ -342,6 +342,223 @@
       window.chatbotSystemPrompt = "Always respond in proper markdown., Don't use ### in markdown. But use bold, italics, and other markdowns whenever needed.";
       window.tools = [];
       window.trainingData = [];
+      function get_all_name(name) {
+        const data = name.split(" ");
+        const first_name = data[0];
+        let middle_name = "";
+        if(data.length > 2){
+          for(let i = 1; i<data.length - 1; i++){
+            middle_name = middle_name + " " + data[i];
+          }
+        }
+        let last_name = "";
+        if(data.length>1){
+          last_name = data[data.lenght - 1];
+        }
+        return {
+          f_name: first_name,
+          m_name: middle_name,
+          l_name: last_name
+        }
+      }
+
+      function get_adhaar_data(){
+        const name = document.getElementById("name").value;
+        const data = get_all_name(name);
+        const first_name = data.f_name;
+        const middle_name = data.m_name;
+        const last_name = data.l_name;
+        const dob = document.getElementById("dob").value;
+        const mobileNumber = document.getElementById("mobileNumber").value;
+        const email = document.getElementById("email").value;
+        const address = document.getElementById("address").value;
+        const biometricData = document.getElementById("biometricData").value;
+        return {
+          first_name:first_name,
+          middle_name:middle_name,
+          last_name:last_name,
+          dob:dob,
+          mobileNumber:mobileNumber,
+          email:email,
+          address:address,
+          biometricData:biometricData
+        }
+      }
+      function get_marksheet_data(){
+        const name = document.getElementById("name").value;
+        const data = get_all_name(name);
+        const first_name = data.f_name;
+        const middle_name = data.m_name;
+        const last_name = data.l_name;
+        const dob = document.getElementById("dob").value;
+        const schoolName = document.getElementById("schoolName").value;
+        const classs = document.getElementById("class").value;
+        const rollNumber = document.getElementById("rollNumber").value;
+        const marks = document.getElementById("marks").value;
+        return {
+          first_name:first_name,
+          middle_name:middle_name,
+          last_name:last_name,
+          dob:dob,
+          schoolName:schoolName,
+          classs:classs,
+          rollNumber:rollNumber,
+          marks:marks
+        }
+      }
+      function get_passport_data(){
+        const name = document.getElementById("name").value;
+        const data = get_all_name(name);
+        const first_name = data.f_name;
+        const middle_name = data.m_name;
+        const last_name = data.l_name;
+        const dob = document.getElementById("dob").value;
+        const address = document.getElementById("address").value;
+        const birthCertificate = document.getElementById("birthCertificate").value;
+        return {
+          first_name:first_name,
+          middle_name:middle_name,
+          last_name:last_name,
+          dob:dob,
+          address:address,
+          birthCertificate:birthCertificate
+        }
+      }
+      function get_license_data(){
+        const name = document.getElementById("name").value;
+        const data = get_all_name(name);
+        const first_name = data.f_name;
+        const middle_name = data.m_name;
+        const last_name = data.l_name;
+        const dob = document.getElementById("dob").value;
+        const address = document.getElementById("address").value;
+        const medicalCertificate = document.getElementById("medicalCertificate").value;
+        return {
+          first_name:first_name,
+          middle_name:middle_name,
+          last_name:last_name,
+          dob:dob,
+          address:address,
+          medicalCertificate:medicalCertificate
+        }
+      }
+      function get_pan_data(){
+        const name = document.getElementById("name").value;
+        const data = get_all_name(name);
+        const first_name = data.f_name;
+        const middle_name = data.m_name;
+        const last_name = data.l_name;
+        const dob = document.getElementById("dob").value;
+        const address = document.getElementById("address").value;
+        const mobileNumber = document.getElementById("mobileNumber").value;
+        const email = document.getElementById("email").value;
+        return {
+          first_name:first_name,
+          middle_name:middle_name,
+          last_name:last_name,
+          dob:dob,
+          mobileNumber:mobileNumber,
+          email:email,
+          address:address
+        }
+      }
+      function get_voter_data(){
+        const name = document.getElementById("name").value;
+        const data = get_all_name(name);
+        const first_name = data.f_name;
+        const middle_name = data.m_name;
+        const last_name = data.l_name;
+        const dob = document.getElementById("dob").value;
+        const address = document.getElementById("address").value;
+        return {
+          first_name:first_name,
+          middle_name:middle_name,
+          last_name:last_name,
+          dob:dob,
+          address:address
+        }
+      }
+      async function adhaar_submit_btn(){
+        console.log("adhaar_submit_btn clicked");
+        const data = get_adhaar_data();
+        const response = await fetch('/chatbot/adhaar_details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log("result = ",result);
+      }
+      async function pan_submit_btn(){
+        console.log("pan_submit_btn clicked");
+        const data = get_pan_data();
+        const response = await fetch('/chatbot/pan_card_details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log("result = ",result);
+      }
+      async function voter_submit_btn(){
+        console.log("voter_submit_btn clicked");
+        const data = get_voter_data();
+        const response = await fetch('/chatbot/voter_details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log("result = ",result);
+      }
+      async function license_submit_btn(){
+        console.log("license_submit_btn clicked");
+        const data = get_license_data();
+        const response = await fetch('/chatbot/driving_details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log("result = ",result);
+      }
+
+      async function passport_submit_btn(){
+        console.log("passport_submit_btn clicked");
+        const data = get_passport_data();
+        const response = await fetch('/chatbot/passport_details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log("result = ",result);
+      }
+      
+      async function marksheet_submit_btn(){
+        console.log("marksheet_submit_btn clicked");
+        const data = get_marksheet_data();
+        const response = await fetch('/chatbot/marksheet_details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log("result = ",result);
+      }
+      
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script type="importmap">

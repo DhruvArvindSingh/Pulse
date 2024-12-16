@@ -113,7 +113,7 @@ function displayAadhaarForm(name, dob, gender, address, mobileNumber, email, bio
             <label for="biometricData">Biometric Data:</label>
             <input type="text" id="biometricData" value="${biometricData}" />
         </div>
-        <button id="submit-btn">Submit</button>
+        <button id="submit-btn" name="adhaar_submit_btn" onclick="adhaar_submit_btn()">Submit</button>
     `;
     const contentDiv = document.createElement("div");
     contentDiv.appendChild(formDiv);
@@ -146,7 +146,7 @@ function displayVoterForm(name, dob, address) {
             <label for="address">Address:</label>
             <input type="text" id="address" value="${address}" />
         </div>
-        <button id="submit-btn">Submit</button>
+        <button id="submit-btn" onclick="voter_submit_btn()">Submit</button>
     `;
     const contentDiv = document.createElement("div");
     contentDiv.appendChild(formDiv);
@@ -189,7 +189,7 @@ function displayPanForm(name, dob, address, mobileNumber, email) {
             <label for="email">Email ID:</label>
             <input type="email" id="email" value="${email}" />
         </div>
-        <button id="submit-btn">Submit</button>
+        <button id="submit-btn" onclick="pan_submit_btn()">Submit</button>
     `;
     const contentDiv = document.createElement("div");
     contentDiv.appendChild(formDiv);
@@ -228,7 +228,7 @@ function displayLicenseForm(name, dob, address, medicalCertificate) {
             <label for="medicalCertificate">Medical Certificate:</label>
             <input type="text" id="medicalCertificate" value="${medicalCertificate}" />
         </div>
-        <button id="submit-btn">Submit</button>
+        <button id="submit-btn" onclick="license_submit_btn()">Submit</button>
     `;
     const contentDiv = document.createElement("div");
     contentDiv.appendChild(formDiv);
@@ -267,7 +267,7 @@ function displayPassportForm(name, dob, address, birthCertificate) {
             <label for="birthCertificate">Birth Certificate:</label>
             <input type="text" id="birthCertificate" value="${birthCertificate}" />
         </div>
-        <button id="submit-btn">Submit</button>
+        <button id="submit-btn" onclick="passport_submit_btn()">Submit</button>
     `;
     const contentDiv = document.createElement("div");
     contentDiv.appendChild(formDiv);
@@ -386,7 +386,7 @@ function displayMarksCardForm(name, dob, schoolName, currentClass, rollNumber, m
             <label for="marks">Marks:</label>
             <input type="text" id="marks" value="${marks}" />
         </div>
-        <button id="submit-btn" onclick="submitMarksCardForm()">Submit</button>
+        <button id="submit-btn" onclick="marksheet_submit_btn()">Submit</button>
     `;
     const contentDiv = document.createElement("div");
     contentDiv.appendChild(formDiv);
