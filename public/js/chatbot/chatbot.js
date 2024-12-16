@@ -1063,7 +1063,7 @@ async function buildSuggestions() {
         const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer vtwn_2Ca97BQraumTC37dTGXUhJLL8vmY`,
+                'Authorization': `Bearer vtwn_mjx2uthosgYg64iKWPvBdZLgDiS`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
@@ -1680,7 +1680,7 @@ SetCredentials();
 function SetCredentials() {
     if (chatModel == "gpt-4o") {
         apiBase = "https://std-openaiproxy.web.val.run/v1/chat/completions"
-        apiKey = "vtwn_2Ca97BQraumTC37dTGXUhJLL8vmY"
+        apiKey = "vtwn_mjx2uthosgYg64iKWPvBdZLgDiS"
         apiModel = "gpt-4o";
         supportImages = true;
         supportFunctions = true
