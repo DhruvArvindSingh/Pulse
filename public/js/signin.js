@@ -12,12 +12,4 @@ async function signin() {
             "Content-type": "application/json; charset=UTF-8"
         }
     })
-    const data = await res.json();
-    console.log("data =",data);
-    if (data.token) {
-        window.location.href = "/";
-    }
-    else{
-        alert("Invalid email or password");
-    }
 }  

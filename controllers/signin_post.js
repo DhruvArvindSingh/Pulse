@@ -20,7 +20,7 @@ export default async function signin_post(req, res){
         res.cookie("token", token);
         res.cookie("password", password);
         // res.setHeader("token",token);
-        res.json({ token: token });
+        res.redirect("/");
     }
     else {
         console.log("user not found");
