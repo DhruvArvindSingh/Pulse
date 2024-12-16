@@ -344,17 +344,23 @@
       window.trainingData = [];
       function get_all_name(name) {
         const data = name.split(" ");
+        console.log("data = ",data);
+        console.log("data[0] = ",data[0]);
+        console.log("data[1] = ",data[1]);
+        console.log("data[2] = ",data[2]);
         const first_name = data[0];
         let middle_name = "";
         if(data.length > 2){
           for(let i = 1; i<data.length - 1; i++){
-            middle_name = middle_name + " " + data[i];
+            if(i>1){
+              middle_name = middle_name + " ";  
+            }
+            middle_name = middle_name + data[i];
           }
         }
-        let last_name = "";
-        if(data.length>1){
-          last_name = data[data.lenght - 1];
-        }
+        // if(data.length>1){
+        const last_name = data[data.lenght - 1];
+        // }
         return {
           f_name: first_name,
           m_name: middle_name,
@@ -365,6 +371,7 @@
       function get_adhaar_data(){
         const name = document.getElementById("name").value;
         const data = get_all_name(name);
+        console.log("received data = ", data);
         const first_name = data.f_name;
         const middle_name = data.m_name;
         const last_name = data.l_name;
