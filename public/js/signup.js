@@ -1,3 +1,8 @@
+import pass_format from "../../utils/pass_format.js";
+import email_format from "../../utils/email_format.js";
+import f_name_format from "../../utils/f_name_format.js";
+import l_name_format from "../../utils/l_name_format.js";
+
 
 async function submit() {
     console.log("submit called");
@@ -14,16 +19,37 @@ async function submit() {
         alert("Please fill all the fields");
         return;
     }
-    await fetch("/signup", {
-        method: "POST",
-        body: JSON.stringify({
-            first_name: f_name,
-            last_name: l_name,
-            email: email,
-            password: password
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    })
+    if (pass_format(password) == false) {
+        alert("Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+        return;
+    }
+    if (email_format(email) == false) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+    if (f_name_format(password) == false) {
+        alert("Please enter a valid First Name.");
+        return;
+    }
+    if (l_name_format(email) == false) {
+        alert("Please enter a valid Last Name.");
+        return;
+    }
+    try{
+
+        const res = await fetch("/signup", {
+            method: "POST",
+            body: JSON.stringify({
+                first_name: f_name,
+                last_name: l_name,
+                email: email,
+                password: password
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+    }catch(e){
+        console.log("Error occurred during signup: ", e);
+    }
 }

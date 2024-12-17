@@ -1,5 +1,5 @@
 import client from "../database/index.js";
-import hash from './hash.js';
+import hash from '../utils/hash.js';
 export default async function pass_verify(req, res, next) {
     console.log("pass_verify called");
     console.log("decoded email = ", req.email);

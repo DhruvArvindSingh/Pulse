@@ -1,5 +1,5 @@
 
-import hash from './hash.js';
+import hash from '../utils/hash.js';
 
 
 export default async function hash_pass(req, res, next) {
