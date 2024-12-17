@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import client from "../database/index.js";
 import dotenv from "dotenv";
-import hash from "../middleware/hash.js";
+import hash from "../utils/hash.js";
 dotenv.config();
 
 const {JWT_SECRET} = process.env;

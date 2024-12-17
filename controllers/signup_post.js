@@ -15,7 +15,7 @@ export default async function signup_post(req, res) {
         console.log("Signup successful for:", user.rows[0]);
 
         // Redirect to the signin page
-        res.redirect("/signin");
+        await res.redirect("/signin");
     } catch (e) {
         console.error("An error occurred during signup:", e);
 

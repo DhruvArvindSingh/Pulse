@@ -1,7 +1,3 @@
-import pass_format from "../../utils/pass_format.js";
-import email_format from "../../utils/email_format.js";
-import f_name_format from "../../utils/f_name_format.js";
-import l_name_format from "../../utils/l_name_format.js";
 
 
 async function submit() {
@@ -19,20 +15,20 @@ async function submit() {
         alert("Please fill all the fields");
         return;
     }
-    if (pass_format(password) == false) {
-        alert("Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+    if (f_name_format(f_name) == false) {
+        alert("Please enter a valid First Name.");
+        return;
+    }
+    if (l_name_format(l_name) == false) {
+        alert("Please enter a valid Last Name.");
         return;
     }
     if (email_format(email) == false) {
         alert("Please enter a valid email address.");
         return;
     }
-    if (f_name_format(password) == false) {
-        alert("Please enter a valid First Name.");
-        return;
-    }
-    if (l_name_format(email) == false) {
-        alert("Please enter a valid Last Name.");
+    if (pass_format(password) == false) {
+        alert("Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
         return;
     }
     try{
@@ -52,4 +48,18 @@ async function submit() {
     }catch(e){
         console.log("Error occurred during signup: ", e);
     }
+}
+function pass_format(password) {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+}
+function f_name_format(f_name) {
+    return /^[a-zA-Z]+$/.test(f_name);
+    
+}
+function l_name_format(l_name) {
+    return /^[a-zA-Z]+$/.test(l_name);   
+}
+function email_format(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
